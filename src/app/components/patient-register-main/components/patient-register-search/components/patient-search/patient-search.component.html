@@ -1,0 +1,42 @@
+<div class="patientSearch">
+    <p-accordion expandIcon="pi pi-fw pi-chevron-right sm" collapseIcon="pi pi-fw pi-chevron-down" class="searchAcc">
+        <p-accordionTab header="Cautare" [selected]="true">
+            <form #patientSearchForm="ngForm">
+                <div class="row">
+                    <div class="col-5">
+                        <label for="multipleSearch" class="labelFont mb-1">Cod prezentare | Nume pacient | Data nastere | CNP | Telefon</label>
+                        <input 
+                            id="multipleSearch" 
+                            name="multipleSearch"
+                            type="text"
+                            appendTo="body"
+                            [(ngModel)]="multipleSearch"
+                            style="width: 100%;"
+                            pInputText>
+                    </div>
+                    
+                    <div class="col-3 pl-0">
+                        <span>
+                            <label for="departmentID" class="labelFont mb-1">Departament</label>
+                            <p-dropdown 
+                                id="departmentID" 
+                                name="departmentID"
+                                type="text"
+                                appendTo="body"
+                                [options]="departmentOptions" 
+                                [(ngModel)]="departmentID">
+                            </p-dropdown>
+                        </span>
+                    </div>
+
+                    <div class="col-2 mt-4">
+                        <button class="btn btn-sm btn-raised btn-info buttonSearch" [disabled]="!multipleSearch && !departmentID" (click)="search()">Cauta</button>
+                    </div>
+                    <div class="col-2 mt-4">
+                        <button class="btn btn-sm btn-raised buttonReset">Reseteaza</button>
+                    </div>
+                </div>
+            </form>
+        </p-accordionTab>
+    </p-accordion>
+</div>

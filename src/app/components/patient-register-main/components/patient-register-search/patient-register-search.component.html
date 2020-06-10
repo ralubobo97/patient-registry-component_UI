@@ -1,0 +1,13 @@
+<div class="patientRegisterSearch">
+    <div class="row">
+        <div class="col-12">
+            <patient-search (searchResults)="getSearchResults($event)"></patient-search>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <patient-search-form [results]="searchResults"></patient-search-form>
+        </div>
+    </div>
+</div>
