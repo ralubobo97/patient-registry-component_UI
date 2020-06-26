@@ -1,21 +1,21 @@
 <!-- Div to be replaced -->
 <div class="navbarIW" style="border: 1px solid red; height: 7vh; margin-bottom: 1%; width: 100%;"></div>
 
-<div class="row" style="width: 100%; margin: 0;">
+<div class="row" style="width: 100%;">
     <!-- Div to be replaced -->
-    <div class="colSMTH" style="border: 1px solid red; height: 90vh; width: 3%;"></div>
-
+    <div class="something" style="border: 1px solid red; height: 90vh; width: 3%;"></div>
+    <div style="width: 1%;"></div>
     <!-- Registru -->
-    <div class="col-11 ml-3 pr-0" style="border: 1px solid green;">
+    <div class="something2" style="border: 1px solid green; height: 90vh; width: 96%;">
         
         <h3 class="mt-3 mb-1">Registru</h3>
         <hr class="mt-0">
         <div class="row">
             <div class="col-6">
-                <patient-register-search></patient-register-search>
+                <patient-register-search (selectedPatient)="getSelectedPatient($event)" (refreshButton)="checkIfTableIsRefreshed($event)"></patient-register-search>
             </div>
             <div class="col-6">
-                <patient-register-information></patient-register-information>
+                <patient-register-information [sendSelectedPatient]="currentSelectedPatient" [refreshTableButton]="refreshTable"></patient-register-information>
             </div>
         </div>
 

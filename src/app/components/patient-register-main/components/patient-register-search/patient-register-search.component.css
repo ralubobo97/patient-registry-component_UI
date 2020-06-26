@@ -1,0 +1,62 @@
+.searchAcc{
+    padding-top: 10px;
+}
+
+.multipleSearch{
+    margin-top: 20px;
+}
+
+.labelFont{
+    font-size: 11px;
+}
+
+.buttonSearch{
+    width: 80%;
+}
+
+.buttonReset{
+    width: 80%;
+    color: white;
+    background-color: orange;
+    border-color: orange;
+}
+
+.styleSelectedPatient{
+    color: rgb(29, 172, 207);
+    cursor: pointer;
+}
+.styleSelectedPatient:hover{
+    color: rgb(24, 134, 161);
+}
+
+::ng-deep .patientSearch .ui-accordion .ui-accordion-header{
+margin-top: 5px;;
+}
+
+::ng-deep .searchAcc .ui-accordion .ui-accordion-header{
+    margin-bottom: 0px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+::ng-deep .searchAcc .ui-accordion .ui-accordion-header a{
+    background-color: lightgray;
+    border: none !important;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+}
+
+::ng-deep .searchAcc .ui-accordion .ui-accordion-header:not(.ui-state-disabled).ui-state-active a{
+    background-color: lightgray !important;
+    color: black !important;
+    border: none !important;
+}
+
+::ng-deep .searchAcc .ui-accordion .ui-accordion-header a:focus{
+    box-shadow: none !important;
+}
+
+::ng-deep .searchAcc .ui-accordion-toggle-icon {
+    font-size: 1em;
+    color: black !important;
+}

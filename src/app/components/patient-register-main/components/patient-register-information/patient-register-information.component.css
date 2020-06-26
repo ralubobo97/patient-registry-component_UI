@@ -1,0 +1,157 @@
+.patientInformation{
+    background-color: white;
+    padding: 0 5px;
+}
+
+.styleSelectedEOC{
+    color: rgb(29, 172, 207);
+    cursor: pointer;
+    font-size: 1.5em
+}
+.styleSelectedEOC:hover{
+    color: rgb(24, 134, 161);
+}
+
+.labelFont{
+    font-size: 11px;
+}
+
+.inputFormat{
+    width: 100%;
+}
+
+.readonlyInputFormat{
+    width: 100%;
+    background-color: #e4e4e4;
+}
+
+.subtitle p{
+    display: inline-block;
+    color: #2d82bb;
+    margin-right: 2%;
+}
+
+.subtitle .line{
+    display: inline-block;
+    border: 1px dashed #2d82bb;
+    width: 83%;
+}
+
+.subtitle .line2{
+    display: inline-block;
+    border: 1px dashed #2d82bb;
+    width: 85%;
+}
+
+/* Actions */
+.actions{
+float: right;
+}
+
+.cancelButton{
+    border-color: orange;
+    background-color: orange;
+    color: white;
+}
+
+.saveButton{
+    border-color: #2d82bb;
+    background-color: #2d82bb;
+    color: white;
+}
+
+
+
+
+
+
+::ng-deep .calendarFormat .ui-calendar, ::ng-deep .dropdownFormat .ui-dropdown{
+    width: 100%;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview-panels {
+    padding: 0px !important;
+}
+
+/* Selected Tab */
+::ng-deep .patientInformation .patientTabs .ui-tabview.ui-tabview-top .ui-tabview-nav li.ui-tabview-selected, .ui-tabview.ui-tabview-bottom .ui-tabview-nav li.ui-tabview-selected, .ui-tabview.ui-tabview-left .ui-tabview-nav li.ui-tabview-selected, .ui-tabview.ui-tabview-right .ui-tabview-nav li.ui-tabview-selected{
+    border-bottom: 0;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview.ui-tabview-top .ui-tabview-nav li:not(.ui-tabview-selected):hover, .ui-tabview.ui-tabview-bottom .ui-tabview-nav li:not(.ui-tabview-selected):hover, .ui-tabview.ui-tabview-left .ui-tabview-nav li:not(.ui-tabview-selected):hover, .ui-tabview.ui-tabview-right .ui-tabview-nav li:not(.ui-tabview-selected):hover{
+    border-bottom: 0;
+}
+
+/* Selected Tab */
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li.ui-tabview-selected a{
+    background-color: #b5d0e2 !important;
+    color: #2d82bb !important;
+    font-weight: bold;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul{
+    height: 44px;
+    background-color: lightgrey; 
+}
+/* border-bottom: 5px solid #b5d0e2; */
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li{
+    height: 32px;
+    padding-bottom: 5px;
+    border-bottom: 0;
+    width: 190px;
+    text-align: center;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li a{
+    color: white !important;
+    background-color: #2d82bb !important;
+    border: 1px solid white;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    padding: 4px 30px 6px;
+    font-weight: bold;
+    width: 190px;
+    text-align: center;
+}
+
+/* First Tab */
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(1){
+    margin-left: 10px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(1).ui-tabview-selected a{
+    background-color: white !important;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(1) a{
+    background-color: lightgrey !important;
+    color: rgb(63, 62, 62) !important;
+    font-weight: bold;
+}
+
+/* Tabs from right side */
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(2){
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
+    float: right ;
+    margin-right: 10px;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(3){
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
+    float: right ;
+}
+
+::ng-deep .patientInformation .patientTabs .ui-tabview ul li:nth-child(4){
+    padding-bottom: 0;
+    margin-bottom: 0;
+    margin-top: 10px;
+    float: right ;
+}
+
