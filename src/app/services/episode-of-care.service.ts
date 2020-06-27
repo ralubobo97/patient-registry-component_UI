@@ -49,4 +49,22 @@ export class EpisodeOfCareService {
   updateEpisodeOfCare(body) {
     return this.http.post('/api/episodeOfCare/updateEpisodeOfCare', body, this.options);
   }
+
+  saveNewEpisodeOfCare(body) {
+    return this.http.post('/api/episodeOfCare/saveNewEpisodeOfCare', body, this.options);
+  }
+
+  getLastRegisteredEOC() {
+    return this.http.get('/api/episodeOfCare/getLastRegisteredEOC');
+  }
+
+  getPatientByCNP(cnp) {
+    let params = new HttpParams().set('cnp', cnp);
+    let options = { headers: this.headers, params };
+    return this.http.get<any>('/api/episodeOfCare/getPatientByCNP', options);
+  }
+
+  saveNewPatient(body){
+    return this.http.post('/api/episodeOfCare/saveNewPatient', body, this.options);
+  }
 }

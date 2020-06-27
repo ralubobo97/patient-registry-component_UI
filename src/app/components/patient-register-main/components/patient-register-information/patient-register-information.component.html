@@ -2,7 +2,7 @@
     <div class="row">
         <div class="col-12 pl-0 mr-1">
             <div class="patientInformation">
-                <p-tabView class="patientTabs" [activeIndex]="tabIndex" (onChange)="handleChange($event)">
+                <p-tabView class="patientTabs" [activeIndex]="tabIndex" (onChange)="handleChange($event, episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm)">
                     <!---------------------->
                     <!--Prezentari Pacient-->
                     <!---------------------->
@@ -39,19 +39,419 @@
                         </div>
                     </p-tabPanel>
 
+
+
+
                     <!---------------------->
                     <!--Pacient Necunoscut-->
                     <!---------------------->
                     <p-tabPanel header="Pacient Necunoscut" [selected]="unknownPatientTab">
-                        Content 2
+                        <unknown-patient></unknown-patient>
                     </p-tabPanel>
+
+
+
 
                     <!--------------->
                     <!--Pacient Nou-->
                     <!--------------->
                     <p-tabPanel header="Pacient Nou" [selected]="newPatientTab">
-                        Content 3
+                        <div class="newPatient" m-3>
+    
+                            <!--Detalii prezentare-->
+                            <div class="subtitle ml-4 mt-3 mb-3">
+                                <p>Detalii prezentare</p>
+                                <div class="line"></div>
+                            </div>
+                            <form #newPatientEOCForm="ngForm">
+                                <div class="row ml-2 mr-2">
+                                    <div class="col-4">
+                                        <span>
+                                            <label for="eocCode" class="labelFont mb-0">Cod prezentare</label>
+                                            <input id="eocCode" name="eocCode" type="text" appendTo="body" [(ngModel)]="eocCode" class="readonlyInputFormat" pInputText readonly>
+                                        </span>
+                                    </div>
+                                    
+                                    <div class="col-4 pl-0" style="display: grid;">
+                                        <label for="departmentID" class="labelFont mb-0">Departament</label>
+                                        <p-dropdown 
+                                            id="departmentID" 
+                                            name="departmentID"
+                                            appendTo="body"
+                                            class="dropdownFormat"
+                                            [options]="departmentOptions" 
+                                            [(ngModel)]="departmentID">
+                                        </p-dropdown>
+                                    </div>
+                        
+                                    <div class="col-4 pl-0">
+                                        <label for="eocDate" class="labelFont mb-0">Data</label>
+                                        <p-calendar 
+                                            id="eocDate" 
+                                            name="eocDate"
+                                            dateFormat="dd.mm.yy"
+                                            [yearNavigator]="true"
+                                            yearRange="1920:2030"
+                                            [showIcon]="true"
+                                            appendTo="body"
+                                            class="episodeOfCareCalendar"
+                                            [(ngModel)]="eocDate"></p-calendar>
+                                    </div>
+                                </div>
+                            </form>
+                        
+                            <!--Date personale-->
+                            <div class="subtitle ml-4 mt-3 mb-3">
+                                <p>Date personale</p>
+                                <div class="line2"></div>
+                            </div>
+                            <form #newPatientForm="ngForm">
+                                <div class="row ml-2 mr-2">
+                                    <div class="col-4">
+                                        <span>
+                                            <label for="lastname" class="labelFont mb-0">Nume</label>
+                                            <input id="lastname" name="lastname" type="text" appendTo="body" [(ngModel)]="lastname" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-3 pl-0">
+                                        <label for="birthdate" class="labelFont mb-0">Data nastere</label>
+                                        <p-calendar 
+                                            id="birthdate" 
+                                            name="birthdate"
+                                            dateFormat="dd.mm.yy"
+                                            [yearNavigator]="true"
+                                            yearRange="1920:2030"
+                                            [showIcon]="true"
+                                            appendTo="body"
+                                            [(ngModel)]="birthdate"></p-calendar>
+                                    </div>
+                                    <div class="col-1 pl-0">
+                                        <label for="gender" class="labelFont mb-0">Sex</label>
+                                        <p-dropdown 
+                                            id="gender" 
+                                            name="gender"
+                                            appendTo="body"
+                                            class="dropdownFormat"
+                                            [options]="genderOptions"
+                                            [(ngModel)]="gender">
+                                        </p-dropdown>
+                                    </div>
+                                    <div class="col-4 pl-0">
+                                        <label for="idType" class="labelFont mb-0">Act identitate</label>
+                                        <p-dropdown 
+                                            id="idType" 
+                                            name="idType"
+                                            appendTo="body"
+                                            class="dropdownFormat"
+                                            [options]="idTypeOptions" 
+                                            [(ngModel)]="idType">
+                                        </p-dropdown>
+                                    </div>
+                                </div>
+                        
+                                <div class="row ml-2 mr-2">
+                                    <div class="col-4">
+                                        <span>
+                                            <label for="firstname" class="labelFont mb-0">Prenume</label>
+                                            <input id="firstname" name="firstname" type="text" appendTo="body" [(ngModel)]="firstname" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 pl-0">
+                                        <span>
+                                            <label for="age" class="labelFont mb-0">Varsta</label>
+                                            <input id="age" name="age" type="text" appendTo="body" [(ngModel)]="age" class="readonlyInputFormat" pInputText readonly>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 pl-0">
+                                        <span>
+                                            <label for="birthWeight" class="labelFont mb-0">Greutate nastere [g]</label>
+                                            <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-1 pl-0">
+                                        <span>
+                                            <label for="series" class="labelFont mb-0">Serie</label>
+                                            <input id="series" name="series" type="text" appendTo="body" [(ngModel)]="series" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-3 pl-0">
+                                        <span>
+                                            <label for="seriesNumber" class="labelFont mb-0">Numar</label>
+                                            <input id="seriesNumber" name="seriesNumber" type="text" appendTo="body" [(ngModel)]="seriesNumber" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                </div>
+                        
+                                <div class="row ml-2 mr-2 mb-3">
+                                    <div class="col-4">
+                                        <span>
+                                            <label for="cnp" class="labelFont mb-0">CNP</label>
+                                            <input id="cnp" name="cnp" type="text" appendTo="body" [(ngModel)]="cnp" class="inputFormat" pInputText [ngClass]="cnpValid" (keyup)="validateCNP()">
+                                        </span>
+                                    </div>
+                                    <div class="col-4 pl-0">
+                                        <span>
+                                            <label for="cid" class="labelFont mb-0">CID</label>
+                                            <input id="cid" name="cid" type="text" appendTo="body" [(ngModel)]="cid" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 pl-0">
+                                        <span>
+                                            <label for="issuedBy" class="labelFont mb-0">Eliberat de</label>
+                                            <input id="issuedBy" name="issuedBy" type="text" appendTo="body" [(ngModel)]="issuedBy" class="inputFormat" pInputText>
+                                        </span>
+                                    </div>
+                                    <div class="col-2 pl-0">
+                                        <label for="issueDate" class="labelFont mb-0">Eliberat la data</label>
+                                        <p-calendar 
+                                            id="issueDate" 
+                                            name="issueDate"
+                                            dateFormat="dd.mm.yy"
+                                            [yearNavigator]="true"
+                                            yearRange="1920:2030"
+                                            [showIcon]="true"
+                                            appendTo="body"
+                                            class="issueDateCalendar"
+                                            [(ngModel)]="issueDate"></p-calendar>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!---------------->
+                        <!-- INNER TABS -->
+                        <!---------------->
+                        <div class="innerTabs">
+                            <p-tabView class="innerTabViews">
+                                <p-tabPanel header="Detalii pacient" [selected]="true">
+                                    <form #newPatientDetailsForm="ngForm">
+                                        <!--Domiciliu legal-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Domiciliu legal</p>
+                                            <div class="line2"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="country" class="labelFont mb-0">Tara</label>
+                                                <p-dropdown 
+                                                    id="country" 
+                                                    name="country"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="countryOptions" 
+                                                    [(ngModel)]="country">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="county" class="labelFont mb-0">Sector / Judet</label>
+                                                <p-dropdown 
+                                                    id="county" 
+                                                    name="county"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="countyOptions" 
+                                                    [(ngModel)]="county">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="street" class="labelFont mb-0">Strada</label>
+                                                    <input id="street" name="street" type="text" appendTo="body" [(ngModel)]="street" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+                        
+                                        <div class="row ml-2 mr-2">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="nationality" class="labelFont mb-0">Cetatenia</label>
+                                                    <input id="nationality" name="nationality" type="text" appendTo="body" [(ngModel)]="nationality" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="city" class="labelFont mb-0">Localitate</label>
+                                                <p-dropdown 
+                                                    id="city" 
+                                                    name="city"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cityOptions" 
+                                                    [(ngModel)]="city">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <div class="row ml-0 mr-0">
+                                                    <div class="col-4 pl-0">
+                                                        <span>
+                                                            <label for="streetNumber" class="labelFont mb-0">Numar</label>
+                                                            <input id="streetNumber" name="streetNumber" type="text" appendTo="body" [(ngModel)]="streetNumber" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4 pl-0">
+                                                        <span>
+                                                            <label for="building" class="labelFont mb-0">Bloc</label>
+                                                            <input id="building" name="building" type="text" appendTo="body" [(ngModel)]="building" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4 pl-0 pr-0">
+                                                        <span>
+                                                            <label for="apartment" class="labelFont mb-0">Apartament</label>
+                                                            <input id="apartment" name="apartment" type="text" appendTo="body" [(ngModel)]="apartment" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                        
+                                        <!--Asigurare sanatate-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Asigurare sanatate</p>
+                                            <div class="line3"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="insuranceStatus" class="labelFont mb-0">Statut asigurat</label>
+                                                <p-dropdown 
+                                                    id="insuranceStatus" 
+                                                    name="insuranceStatus"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="insuranceStatusOptions" 
+                                                    [(ngModel)]="insuranceStatus">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="insuranceType" class="labelFont mb-0">Tip asigurare</label>
+                                                <p-dropdown 
+                                                    id="insuranceType" 
+                                                    name="insuranceType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="insuranceTypeOptions" 
+                                                    [(ngModel)]="insuranceType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="familyDoctor" class="labelFont mb-0">Medic de familie</label>
+                                                    <input id="familyDoctor" name="familyDoctor" type="text" appendTo="body" [(ngModel)]="familyDoctor" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-3">
+                                            <div class="col-4">
+                                                <label for="card" class="labelFont mb-0">Card sanatate</label>
+                                                <p-dropdown 
+                                                    id="card" 
+                                                    name="card"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cardOptions" 
+                                                    [(ngModel)]="card">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="cardType" class="labelFont mb-0">Tip card</label>
+                                                <p-dropdown 
+                                                    id="cardType" 
+                                                    name="cardType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cardTypeOptions" 
+                                                    [(ngModel)]="cardType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="cardNumber" class="labelFont mb-0">Numar card</label>
+                                                    <input id="cardNumber" name="cardNumber" type="text" appendTo="body" [(ngModel)]="cardNumber" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </p-tabPanel>
+                        
+                                <p-tabPanel header="Date medicale">
+                                    <form #newPatientMedicalDataForm="ngForm">
+                                        <!--Date medicale-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Date medicale</p>
+                                            <div class="line2"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="bloodType" class="labelFont mb-0">Grupa sanguina</label>
+                                                <p-dropdown 
+                                                    id="bloodType" 
+                                                    name="bloodType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="bloodTypeOptions" 
+                                                    [(ngModel)]="bloodType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="rh" class="labelFont mb-0">RH</label>
+                                                <p-dropdown 
+                                                    id="rh" 
+                                                    name="rh"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="rhOptions" 
+                                                    [(ngModel)]="rh">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="ahc" class="labelFont mb-0">AHC</label>
+                                                    <textarea name="ahc" pInputTextarea [(ngModel)]="ahc" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-8 pl-0">
+                                                <span>
+                                                    <label for="observations" class="labelFont mb-0">Observatii medicale</label>
+                                                    <textarea name="observations" pInputTextarea [(ngModel)]="observations" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                        </div>
+                        
+                                        <!--Alergii si contraindicatii-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Alergii si contraindicatii</p>
+                                            <div class="line4"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2" style="margin-bottom: 25px;">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="allergies" class="labelFont mb-0">Alergii</label>
+                                                    <textarea name="allergies" pInputTextarea [(ngModel)]="allergies" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="contraindications" class="labelFont mb-0">Contraindicatii</label>
+                                                    <textarea name="contraindications" pInputTextarea [(ngModel)]="contraindications" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="lifestyle" class="labelFont mb-0">Stil de viata</label>
+                                                    <textarea name="lifestyle" pInputTextarea [(ngModel)]="lifestyle" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                        </div>
+                        
+                                    </form>
+                                </p-tabPanel>
+                            </p-tabView>
+                        </div>
                     </p-tabPanel>
+
+
+
 
                     <!------------------->
                     <!--Prezentare Noua-->
@@ -69,12 +469,7 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="eocCode" class="labelFont mb-0">Cod prezentare</label>
-                                            <span *ngIf="selectedEOC">
-                                                <input id="eocCode" name="eocCode" type="text" appendTo="body" [(ngModel)]="eocCode" class="readonlyInputFormat" pInputText readonly>
-                                            </span>
-                                            <span *ngIf="!selectedEOC">
-                                                <input id="eocCode" name="eocCode" type="text" appendTo="body" [(ngModel)]="eocCode" class="inputFormat" pInputText>
-                                            </span>
+                                            <input id="eocCode" name="eocCode" type="text" appendTo="body" [(ngModel)]="eocCode" class="readonlyInputFormat" pInputText readonly>
                                         </span>
                                     </div>
                                     
@@ -100,7 +495,7 @@
                                             yearRange="1920:2030"
                                             [showIcon]="true"
                                             appendTo="body"
-                                            class="calendarFormat"
+                                            class="episodeOfCareCalendar"
                                             [(ngModel)]="eocDate"></p-calendar>
                                     </div>
                                 </div>
@@ -129,7 +524,6 @@
                                             yearRange="1920:2030"
                                             [showIcon]="true"
                                             appendTo="body"
-                                            class="calendarFormat"
                                             [(ngModel)]="birthdate"></p-calendar>
                                     </div>
                                     <div class="col-1 pl-0">
@@ -139,11 +533,11 @@
                                             name="gender"
                                             appendTo="body"
                                             class="dropdownFormat"
-                                            [options]="genderOptions" 
+                                            [options]="genderOptions"
                                             [(ngModel)]="gender">
                                         </p-dropdown>
                                     </div>
-                                    <div class="col-4">
+                                    <div class="col-4 pl-0">
                                         <label for="idType" class="labelFont mb-0">Act identitate</label>
                                         <p-dropdown 
                                             id="idType" 
@@ -163,15 +557,15 @@
                                             <input id="firstname" name="firstname" type="text" appendTo="body" [(ngModel)]="firstname" class="inputFormat" pInputText>
                                         </span>
                                     </div>
-                                    <div class="col-3 pl-0">
+                                    <div class="col-2 pl-0">
                                         <span>
                                             <label for="age" class="labelFont mb-0">Varsta</label>
                                             <input id="age" name="age" type="text" appendTo="body" [(ngModel)]="age" class="readonlyInputFormat" pInputText readonly>
                                         </span>
                                     </div>
-                                    <div class="col-1 pl-0">
+                                    <div class="col-2 pl-0">
                                         <span>
-                                            <label for="birthWeight" class="labelFont mb-0">Greutate nastere</label>
+                                            <label for="birthWeight" class="labelFont mb-0">Greutate nastere [g]</label>
                                             <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="inputFormat" pInputText>
                                         </span>
                                     </div>
@@ -189,11 +583,11 @@
                                     </div>
                                 </div>
 
-                                <div class="row ml-2 mr-2">
+                                <div class="row ml-2 mr-2 mb-3">
                                     <div class="col-4">
                                         <span>
                                             <label for="cnp" class="labelFont mb-0">CNP</label>
-                                            <input id="cnp" name="cnp" type="text" appendTo="body" [(ngModel)]="cnp" class="inputFormat" pInputText>
+                                            <input id="cnp" name="cnp" type="text" appendTo="body" [(ngModel)]="cnp" class="inputFormat" pInputText [ngClass]="cnpValid" (keyup)="validateCNP()">
                                         </span>
                                     </div>
                                     <div class="col-4 pl-0">
@@ -218,42 +612,256 @@
                                             yearRange="1920:2030"
                                             [showIcon]="true"
                                             appendTo="body"
-                                            class="calendarFormat"
+                                            class="issueDateCalendar"
                                             [(ngModel)]="issueDate"></p-calendar>
                                     </div>
                                 </div>
                             </form>
                         </div>
+
+                        <!---------------->
+                        <!-- INNER TABS -->
+                        <!---------------->
                         <div class="innerTabs">
-                            <form #patientDetailsForm="ngForm"></form>
-                            <form #medicalDataForm="ngForm"></form>
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        </div>
-                        <div class="actions">
-                            <button class="btn btn-raised btn-sm cancelButton" (click)="discardChanges()">Renunta</button>
-                            <button class="btn btn-raised btn-sm saveButton" (click)="saveChanges(episodeOfCareForm.value, patientForm.value, patientDetailsForm.value, medicalDataForm.value)">Salveaza</button>
+                            <p-tabView class="innerTabViews">
+                                <p-tabPanel header="Detalii pacient" [selected]="true">
+                                    <form #patientDetailsForm="ngForm">
+                                        <!--Domiciliu legal-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Domiciliu legal</p>
+                                            <div class="line2"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="country" class="labelFont mb-0">Tara</label>
+                                                <p-dropdown 
+                                                    id="country" 
+                                                    name="country"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="countryOptions" 
+                                                    [(ngModel)]="country">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="county" class="labelFont mb-0">Sector / Judet</label>
+                                                <p-dropdown 
+                                                    id="county" 
+                                                    name="county"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="countyOptions" 
+                                                    [(ngModel)]="county">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="street" class="labelFont mb-0">Strada</label>
+                                                    <input id="street" name="street" type="text" appendTo="body" [(ngModel)]="street" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row ml-2 mr-2">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="nationality" class="labelFont mb-0">Cetatenia</label>
+                                                    <input id="nationality" name="nationality" type="text" appendTo="body" [(ngModel)]="nationality" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="city" class="labelFont mb-0">Localitate</label>
+                                                <p-dropdown 
+                                                    id="city" 
+                                                    name="city"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cityOptions" 
+                                                    [(ngModel)]="city">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <div class="row ml-0 mr-0">
+                                                    <div class="col-4 pl-0">
+                                                        <span>
+                                                            <label for="streetNumber" class="labelFont mb-0">Numar</label>
+                                                            <input id="streetNumber" name="streetNumber" type="text" appendTo="body" [(ngModel)]="streetNumber" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4 pl-0">
+                                                        <span>
+                                                            <label for="building" class="labelFont mb-0">Bloc</label>
+                                                            <input id="building" name="building" type="text" appendTo="body" [(ngModel)]="building" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                    <div class="col-4 pl-0 pr-0">
+                                                        <span>
+                                                            <label for="apartment" class="labelFont mb-0">Apartament</label>
+                                                            <input id="apartment" name="apartment" type="text" appendTo="body" [(ngModel)]="apartment" class="inputFormat" pInputText>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!--Asigurare sanatate-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Asigurare sanatate</p>
+                                            <div class="line3"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="insuranceStatus" class="labelFont mb-0">Statut asigurat</label>
+                                                <p-dropdown 
+                                                    id="insuranceStatus" 
+                                                    name="insuranceStatus"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="insuranceStatusOptions" 
+                                                    [(ngModel)]="insuranceStatus">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="insuranceType" class="labelFont mb-0">Tip asigurare</label>
+                                                <p-dropdown 
+                                                    id="insuranceType" 
+                                                    name="insuranceType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="insuranceTypeOptions" 
+                                                    [(ngModel)]="insuranceType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="familyDoctor" class="labelFont mb-0">Medic de familie</label>
+                                                    <input id="familyDoctor" name="familyDoctor" type="text" appendTo="body" [(ngModel)]="familyDoctor" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-3">
+                                            <div class="col-4">
+                                                <label for="card" class="labelFont mb-0">Card sanatate</label>
+                                                <p-dropdown 
+                                                    id="card" 
+                                                    name="card"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cardOptions" 
+                                                    [(ngModel)]="card">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="cardType" class="labelFont mb-0">Tip card</label>
+                                                <p-dropdown 
+                                                    id="cardType" 
+                                                    name="cardType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="cardTypeOptions" 
+                                                    [(ngModel)]="cardType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="cardNumber" class="labelFont mb-0">Numar card</label>
+                                                    <input id="cardNumber" name="cardNumber" type="text" appendTo="body" [(ngModel)]="cardNumber" class="inputFormat" pInputText>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </p-tabPanel>
+
+                                <p-tabPanel header="Date medicale">
+                                    <form #medicalDataForm="ngForm">
+                                        <!--Date medicale-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Date medicale</p>
+                                            <div class="line2"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <label for="bloodType" class="labelFont mb-0">Grupa sanguina</label>
+                                                <p-dropdown 
+                                                    id="bloodType" 
+                                                    name="bloodType"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="bloodTypeOptions" 
+                                                    [(ngModel)]="bloodType">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <label for="rh" class="labelFont mb-0">RH</label>
+                                                <p-dropdown 
+                                                    id="rh" 
+                                                    name="rh"
+                                                    appendTo="body"
+                                                    class="dropdownFormat"
+                                                    [options]="rhOptions" 
+                                                    [(ngModel)]="rh">
+                                                </p-dropdown>
+                                            </div>
+                                            <div class="col-4"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2 mb-1">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="ahc" class="labelFont mb-0">AHC</label>
+                                                    <textarea name="ahc" pInputTextarea [(ngModel)]="ahc" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-8 pl-0">
+                                                <span>
+                                                    <label for="observations" class="labelFont mb-0">Observatii medicale</label>
+                                                    <textarea name="observations" pInputTextarea [(ngModel)]="observations" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                        <!--Alergii si contraindicatii-->
+                                        <div class="subtitle ml-4 mt-3 mb-3">
+                                            <p>Alergii si contraindicatii</p>
+                                            <div class="line4"></div>
+                                        </div>
+                                        <div class="row ml-2 mr-2" style="margin-bottom: 25px;">
+                                            <div class="col-4">
+                                                <span>
+                                                    <label for="allergies" class="labelFont mb-0">Alergii</label>
+                                                    <textarea name="allergies" pInputTextarea [(ngModel)]="allergies" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="contraindications" class="labelFont mb-0">Contraindicatii</label>
+                                                    <textarea name="contraindications" pInputTextarea [(ngModel)]="contraindications" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                            <div class="col-4 pl-0">
+                                                <span>
+                                                    <label for="lifestyle" class="labelFont mb-0">Stil de viata</label>
+                                                    <textarea name="lifestyle" pInputTextarea [(ngModel)]="lifestyle" class="inputFormat"></textarea>
+                                                </span>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </p-tabPanel>
+                            </p-tabView>
                         </div>
                     </p-tabPanel>
                 </p-tabView>
+                
+            </div>
+            
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 pl-0 mr-1">
+            <div class="actions">
+                <button class="btn btn-raised btn-sm saveButton mr-2" 
+                    (click)="saveChanges(episodeOfCareForm.value, patientForm.value, patientDetailsForm.value, medicalDataForm.value, newPatientEOCForm.value, newPatientForm.value, newPatientDetailsForm.value, newPatientMedicalDataForm.value)">Salveaza</button>
+                <button class="btn btn-raised btn-sm cancelButton mr-2" (click)="discardChanges()">Renunta</button>
             </div>
         </div>
     </div>

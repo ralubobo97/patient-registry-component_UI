@@ -11,18 +11,23 @@ import { CalendarModule } from 'primeng/calendar';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 
 import { AppComponent } from './app.component';
 import { PatientRegisterMainComponent } from './components/patient-register-main/patient-register-main.component';
 import { PatientRegisterSearchComponent } from './components/patient-register-main/components/patient-register-search/patient-register-search.component';
 import { PatientRegisterInformationComponent } from './components/patient-register-main/components/patient-register-information/patient-register-information.component';
+import { NewPatientComponent } from './components/patient-register-main/components/patient-register-information/components/new-patient/new-patient.component';
+import { UnknownPatientComponent } from './components/patient-register-main/components/patient-register-information/components/unknown-patient/unknown-patient.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PatientRegisterMainComponent,
     PatientRegisterSearchComponent,
-    PatientRegisterInformationComponent
+    PatientRegisterInformationComponent,
+    NewPatientComponent,
+    UnknownPatientComponent
   ],
   imports: [
     BrowserModule,
@@ -36,7 +41,8 @@ import { PatientRegisterInformationComponent } from './components/patient-regist
     TableModule,
     InputTextModule,
     HttpClientModule,
-    TabViewModule
+    TabViewModule,
+    InputTextareaModule
   ],
   providers: [],
   bootstrap: [AppComponent]
