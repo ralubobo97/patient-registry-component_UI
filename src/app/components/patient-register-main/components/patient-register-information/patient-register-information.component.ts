@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { EpisodeOfCareService } from 'src/app/services/episode-of-care.service';
 import { formatDate, DatePipe } from '@angular/common';
+import { getBirthdateFromCNP, getAge, getGenderFromCNP,checkCNP, checkCID } from 'src/assets/utils';
+import { Message } from 'primeng/api';
 
 @Component({
   selector: 'patient-register-information',
@@ -10,18 +12,35 @@ import { formatDate, DatePipe } from '@angular/common';
 export class PatientRegisterInformationComponent implements OnInit, OnChanges {
   @Input('sendSelectedPatient') selectedPatient;
   @Input('refreshTableButton') refreshButton;
-  
+
   episodesOfCare;
   message;
   selectedPatientCNP;
   patientID;
-  selectedEOC: boolean = false;
+  newPatientID;
   tabIndex;
+  selectedEOC: boolean = false;
   discard: boolean = false;
+  birthWeightEnabled: boolean = false;
+  
   cnpValid = '';
+  requiredDepartment = '';
+  requiredLastname = '';
+  requiredFirstname = '';
+  requiredCID = '';
+  requiredIDType = '';
+  requiredSeries = '';
+  requiredSeriesNumber = '';
+  requiredIssuedBy = '';
+  requiredIssueDate = '';
+  requiredBirthWeight = '';
+
+
+  // Success message
+  successMessage: Message[] = [];
 
   // Episode Of Care Form
-  eocCode; 
+  eocCode;
   departmentID;
   departmentOptions = [{ label: 'Selecteaza', value: '' }];
   eocDate;
@@ -49,7 +68,7 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
   ];
   series; seriesNumber;
   issuedBy; issueDate;
-  
+
   // More patient details Form
   country; county; street;
   countryOptions = [
@@ -130,7 +149,8 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     let reset = changes.refreshButton && changes.refreshButton.currentValue ? changes.refreshButton.currentValue : false;
     this.selectedPatientCNP = changes.selectedPatient && changes.selectedPatient.currentValue ? changes.selectedPatient.currentValue.cnp : '';
-    if(this.selectedPatientCNP != '' && reset == false){
+
+    if (this.selectedPatientCNP != '' && reset == false) {
       this.eocService.getEpisodesOfCareByPatientCNP(this.selectedPatientCNP).subscribe(results => this.episodesOfCare = results);
       this.message = '';
     } else {
@@ -139,12 +159,12 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
       this.episodesOfCareTab = true;
       this.tabIndex = 0;
     }
-    
-    if(!this.selectedEOC){
+
+    if (!this.selectedEOC) {
       this.eocDate = new Date();
     }
 
-    if(this.selectedPatientCNP != ''){
+    if (this.selectedPatientCNP != '') {
       this.eocService.getPatientByCNP(this.selectedPatientCNP).subscribe(patient => {
         this.patientID = patient.patientID;
         this.firstname = patient.firstname;
@@ -200,7 +220,7 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
     });
   }
 
-  resetForms(episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm){
+  resetForms(episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm) {
     episodeOfCareForm.reset();
     patientForm.reset();
     patientDetailsForm.reset();
@@ -211,28 +231,31 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
     newPatientMedicalDataForm.reset();
   }
 
-  handleChange(event, episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm){
+  handleChange(event, episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm) {
     this.tabIndex = event.index;
     this.resetForms(episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm);
 
-    if(this.tabIndex == 0) this.episodesOfCareTab = true;
-    else if(this.tabIndex == 1) this.unknownPatientTab = true;
+    if (this.tabIndex == 0) {           // PREZENTARI PACIENT
+      this.episodesOfCareTab = true;
 
-    else if(this.tabIndex == 2) {   // PACIENT NOU
+    } else if (this.tabIndex == 1) {    // PACIENT NECUNOSCUT
+      this.unknownPatientTab = true;
+
+    } else if (this.tabIndex == 2) {   // PACIENT NOU
       this.newPatientTab = true;
       this.eocService.getLastRegisteredEOC().subscribe(eoc => {
         this.eocCode = Number(eoc[0].code + 1);
       });
       this.eocDate = new Date();
 
-    } else if(this.tabIndex == 3) { // PREZENTARE NOUA
+    } else if (this.tabIndex == 3) {    // PREZENTARE NOUA
       this.newEpisodeOfCareTab = true;
       this.eocService.getLastRegisteredEOC().subscribe(eoc => {
         this.eocCode = Number(eoc[0].code + 1);
       });
       this.eocDate = new Date();
 
-      if(this.selectedPatientCNP != ''){
+      if (this.selectedPatientCNP != '') {
         this.eocService.getPatientByCNP(this.selectedPatientCNP).subscribe(patient => {
           this.patientID = patient.patientID;
           this.firstname = patient.firstname;
@@ -252,7 +275,7 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
     }
   }
 
-  discardChanges(){
+  discardChanges() {
     this.newEpisodeOfCareTab = false;
     this.newPatientTab = false;
     this.unknownPatientTab = false;
@@ -261,9 +284,9 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
     this.selectedEOC = false;
   }
 
-  saveChanges(episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm){
-    if(this.selectedEOC){
-      let body = { episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm  };
+  saveChanges(episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm) {
+    if (this.selectedEOC) {
+      let body = { episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm };
       this.eocService.updateEpisodeOfCare(body).subscribe(res => {
         this.newEpisodeOfCareTab = false;
         this.newPatientTab = false;
@@ -271,9 +294,13 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
         this.episodesOfCareTab = true;
         this.tabIndex = 0;
         this.selectedEOC = false;
+        this.successMessage = [];
+        this.successMessage.push({severity:'success', summary:'Success Message', detail:'Prezentarea a fost modificata cu succes!'});
       });
-    } else {
-      let body = { patientID: this.patientID , episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm  };
+    } else if (this.patientID) {// SE CREEAZA O NOUA PREZENTARE
+      let body = { patientID: this.patientID, episodeOfCareForm, patientForm, patientDetailsForm, medicalDataForm };
+      episodeOfCareForm.eocDate = new Date(episodeOfCareForm.eocDate).toLocaleDateString('ro');
+
       this.eocService.saveNewEpisodeOfCare(body).subscribe(res => {
         this.newEpisodeOfCareTab = false;
         this.newPatientTab = false;
@@ -281,6 +308,8 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
         this.episodesOfCareTab = true;
         this.tabIndex = 0;
         this.selectedEOC = false;
+        this.successMessage = [];
+        this.successMessage.push({severity:'success', summary:'Success Message', detail:'Prezentarea a fost salvata cu succes!'});
 
         this.episodesOfCare.push({
           eocCode: episodeOfCareForm.eocCode,
@@ -289,18 +318,75 @@ export class PatientRegisterInformationComponent implements OnInit, OnChanges {
           departmentID: episodeOfCareForm.departmentID
         })
       });
+    } else {// SE CREEAZA UN PACIENT NOU
+      newPatientEOCForm.eocDate = new Date(newPatientEOCForm.eocDate).toLocaleDateString('ro');
+      newPatientForm.issueDate = new Date(newPatientForm.issueDate).toLocaleDateString('ro');
+
+      this.eocService.getPatientLastID().subscribe(patient => {
+        this.newPatientID = Number(patient[0].id + 1);
+        let body = { newPatientID: this.newPatientID, newPatientEOCForm, newPatientForm, newPatientDetailsForm, newPatientMedicalDataForm };
+
+        this.eocService.saveNewPatient(body).subscribe(res => {
+          this.newEpisodeOfCareTab = false;
+          this.newPatientTab = false;
+          this.unknownPatientTab = false;
+          this.episodesOfCareTab = true;
+          this.tabIndex = 0;
+          this.selectedEOC = false;
+          this.successMessage = [];
+          this.successMessage.push({severity:'success', summary:'Success Message', detail:'Pacientul a fost salvat cu succes!'});
+        });
+      });
     }
   }
-  
-  checkCNP(cnp) {
-    return cnp.length === 13 && cnp.substr(0, 1) !== '0' && Number(cnp);
+
+  validateCNP() {
+    if (!checkCNP(this.cnp)) {
+      this.cnpValid = 'invalidCNP';
+      this.birthdate = '';
+      this.age = '';
+      this.gender = 'M';
+      this.birthWeightEnabled = false;
+    } else {
+      this.cnpValid = '';
+      this.gender = getGenderFromCNP(this.cnp);
+      this.birthdate = getBirthdateFromCNP(this.cnp);
+
+      let currentYear = Number(new Date().getFullYear());
+      let birthdateYear = Number(this.birthdate.toString().split('.')[2]);
+
+      if(currentYear == birthdateYear) {
+        this.age = 0;
+        this.birthWeightEnabled = true;
+      } else if(currentYear - birthdateYear == 1){
+        this.age = 1;
+        this.birthWeightEnabled = false;
+      } else {
+        this.age = getAge(this.birthdate);
+        this.birthWeightEnabled = false;
+      }
+    }
   }
 
-  validateCNP(){
-   if(!this.checkCNP(this.cnp)){
-     this.cnpValid = 'invalidCNP';
-   } else {
-    this.cnpValid = '';
-   }
+  checkRequiredFields(){
+    if(this.departmentID == '') this.requiredDepartment = 'requiredDepartment'; else this.requiredDepartment = '';
+    if(this.lastname == '') this.requiredLastname = 'requiredLastname'; else this.requiredLastname = '';
+    if(this.firstname == '') this.requiredFirstname = 'requiredFirstname'; else this.requiredFirstname = '';
+    if(this.idType == '') this.requiredIDType = 'requiredIDType'; else this.requiredIDType = '';
+    if(this.series == '') this.requiredSeries = 'requiredSeries'; else this.requiredSeries = '';
+    if(this.seriesNumber == '') this.requiredSeriesNumber = 'requiredSeriesNumber'; else this.requiredSeriesNumber = '';
+    if(this.issuedBy == '') this.requiredIssuedBy = 'requiredIssuedBy'; else this.requiredIssuedBy = '';
+    if(this.issueDate == '') this.requiredIssueDate = 'requiredIssueDate'; else this.requiredIssueDate = '';
+    if(this.birthWeightEnabled){
+      if(this.birthWeight == '') this.requiredBirthWeight = 'requiredBirthWeight'; else this.requiredBirthWeight = '';
+    }
+    if(this.cid != '') {
+      if(!checkCID(this.cid)){
+        this.requiredCID = 'requiredCID';
+      } else this.requiredCID = '';
+    } else  {
+      this.requiredCID = 'requiredCID';
+    }
+    
   }
 }

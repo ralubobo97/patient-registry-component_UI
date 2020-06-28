@@ -12,6 +12,8 @@ import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
 import { TabViewModule } from 'primeng/tabview';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { MessagesModule } from 'primeng/messages';
+import { MessageModule } from 'primeng/message';
 
 import { AppComponent } from './app.component';
 import { PatientRegisterMainComponent } from './components/patient-register-main/patient-register-main.component';
@@ -42,7 +44,9 @@ import { UnknownPatientComponent } from './components/patient-register-main/comp
     InputTextModule,
     HttpClientModule,
     TabViewModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MessagesModule,
+    MessageModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -67,4 +67,8 @@ export class EpisodeOfCareService {
   saveNewPatient(body){
     return this.http.post('/api/episodeOfCare/saveNewPatient', body, this.options);
   }
+
+  getPatientLastID(){
+    return this.http.get('/api/episodeOfCare/getPatientLastID');
+  }
 }

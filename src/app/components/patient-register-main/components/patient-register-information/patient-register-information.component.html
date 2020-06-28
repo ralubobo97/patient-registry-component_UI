@@ -8,7 +8,9 @@
                     <!---------------------->
                     <p-tabPanel header="Prezentari Pacient" [selected]="episodesOfCareTab">
                         <div *ngIf="message" class="text-center">
-                            <h4>{{ message }}</h4>
+                            <hr>
+                            <h3>{{ message }}</h3>
+                            <hr>
                         </div>
                         <div class="patientEOCs">
                             <p-table #episodesOfCareTable
@@ -74,19 +76,22 @@
                                     
                                     <div class="col-4 pl-0" style="display: grid;">
                                         <label for="departmentID" class="labelFont mb-0">Departament</label>
-                                        <p-dropdown 
+                                        <p-dropdown
                                             id="departmentID" 
                                             name="departmentID"
                                             appendTo="body"
                                             class="dropdownFormat"
                                             [options]="departmentOptions" 
-                                            [(ngModel)]="departmentID">
+                                            [(ngModel)]="departmentID"
+                                            [ngClass]="requiredDepartment" 
+                                            required
+                                            (keyup)="checkRequiredFields()">
                                         </p-dropdown>
                                     </div>
                         
                                     <div class="col-4 pl-0">
                                         <label for="eocDate" class="labelFont mb-0">Data</label>
-                                        <p-calendar 
+                                        <p-calendar
                                             id="eocDate" 
                                             name="eocDate"
                                             dateFormat="dd.mm.yy"
@@ -110,7 +115,17 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="lastname" class="labelFont mb-0">Nume</label>
-                                            <input id="lastname" name="lastname" type="text" appendTo="body" [(ngModel)]="lastname" class="inputFormat" pInputText>
+                                            <input 
+                                                id="lastname" 
+                                                name="lastname" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="lastname" 
+                                                class="inputFormat" 
+                                                pInputText 
+                                                required
+                                                [ngClass]="requiredLastname" 
+                                                (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-3 pl-0">
@@ -143,7 +158,10 @@
                                             name="idType"
                                             appendTo="body"
                                             class="dropdownFormat"
-                                            [options]="idTypeOptions" 
+                                            [options]="idTypeOptions"
+                                            required
+                                            [ngClass]="requiredIDType" 
+                                            (keyup)="checkRequiredFields()"
                                             [(ngModel)]="idType">
                                         </p-dropdown>
                                     </div>
@@ -153,7 +171,17 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="firstname" class="labelFont mb-0">Prenume</label>
-                                            <input id="firstname" name="firstname" type="text" appendTo="body" [(ngModel)]="firstname" class="inputFormat" pInputText>
+                                            <input 
+                                                id="firstname" 
+                                                name="firstname" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="firstname" 
+                                                class="inputFormat" 
+                                                required
+                                                [ngClass]="requiredFirstname" 
+                                                (keyup)="checkRequiredFields()"
+                                                pInputText>
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
@@ -165,19 +193,34 @@
                                     <div class="col-2 pl-0">
                                         <span>
                                             <label for="birthWeight" class="labelFont mb-0">Greutate nastere [g]</label>
-                                            <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="inputFormat" pInputText>
+                                            <span *ngIf="!birthWeightEnabled">
+                                                <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="readonlyInputFormat" pInputText readonly>
+                                            </span>
+                                            <span *ngIf="birthWeightEnabled">
+                                                <input 
+                                                    id="birthWeight" 
+                                                    name="birthWeight" 
+                                                    type="text" 
+                                                    appendTo="body" 
+                                                    [(ngModel)]="birthWeight" 
+                                                    class="inputFormat" 
+                                                    required
+                                                    [ngClass]="requiredBirthWeight" 
+                                                    (keyup)="checkRequiredFields()"
+                                                    pInputText>
+                                            </span>
                                         </span>
                                     </div>
                                     <div class="col-1 pl-0">
                                         <span>
                                             <label for="series" class="labelFont mb-0">Serie</label>
-                                            <input id="series" name="series" type="text" appendTo="body" [(ngModel)]="series" class="inputFormat" pInputText>
+                                            <input id="series" name="series" type="text" appendTo="body" [(ngModel)]="series" class="inputFormat" pInputText required [ngClass]="requiredSeries" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-3 pl-0">
                                         <span>
                                             <label for="seriesNumber" class="labelFont mb-0">Numar</label>
-                                            <input id="seriesNumber" name="seriesNumber" type="text" appendTo="body" [(ngModel)]="seriesNumber" class="inputFormat" pInputText>
+                                            <input id="seriesNumber" name="seriesNumber" type="text" appendTo="body" [(ngModel)]="seriesNumber" class="inputFormat" pInputText required [ngClass]="requiredSeriesNumber" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                 </div>
@@ -186,19 +229,30 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="cnp" class="labelFont mb-0">CNP</label>
-                                            <input id="cnp" name="cnp" type="text" appendTo="body" [(ngModel)]="cnp" class="inputFormat" pInputText [ngClass]="cnpValid" (keyup)="validateCNP()">
+                                            <input 
+                                                id="cnp" 
+                                                name="cnp" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="cnp" 
+                                                class="inputFormat" 
+                                                pInputText 
+                                                required
+                                                maxlength="13"
+                                                [ngClass]="cnpValid" 
+                                                (keyup)="validateCNP()">
                                         </span>
                                     </div>
                                     <div class="col-4 pl-0">
                                         <span>
                                             <label for="cid" class="labelFont mb-0">CID</label>
-                                            <input id="cid" name="cid" type="text" appendTo="body" [(ngModel)]="cid" class="inputFormat" pInputText>
+                                            <input id="cid" name="cid" type="text" appendTo="body" maxlength="19" placeholder="0000-0000-0000-0000" [(ngModel)]="cid" class="inputFormat" pInputText required [ngClass]="requiredCID" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
                                         <span>
                                             <label for="issuedBy" class="labelFont mb-0">Eliberat de</label>
-                                            <input id="issuedBy" name="issuedBy" type="text" appendTo="body" [(ngModel)]="issuedBy" class="inputFormat" pInputText>
+                                            <input id="issuedBy" name="issuedBy" type="text" appendTo="body" [(ngModel)]="issuedBy" class="inputFormat" pInputText required [ngClass]="requiredIssuedBy" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
@@ -211,6 +265,9 @@
                                             yearRange="1920:2030"
                                             [showIcon]="true"
                                             appendTo="body"
+                                            required
+                                            [ngClass]="requiredIssueDate" 
+                                            (keyup)="checkRequiredFields()"
                                             class="issueDateCalendar"
                                             [(ngModel)]="issueDate"></p-calendar>
                                     </div>
@@ -480,6 +537,9 @@
                                             name="departmentID"
                                             appendTo="body"
                                             class="dropdownFormat"
+                                            required
+                                            [ngClass]="requiredDepartment" 
+                                            (keyup)="checkRequiredFields()"
                                             [options]="departmentOptions" 
                                             [(ngModel)]="departmentID">
                                         </p-dropdown>
@@ -511,7 +571,17 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="lastname" class="labelFont mb-0">Nume</label>
-                                            <input id="lastname" name="lastname" type="text" appendTo="body" [(ngModel)]="lastname" class="inputFormat" pInputText>
+                                            <input 
+                                                id="lastname" 
+                                                name="lastname" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="lastname" 
+                                                class="inputFormat"
+                                                required
+                                                [ngClass]="requiredLastname" 
+                                                (keyup)="checkRequiredFields()"
+                                                pInputText>
                                         </span>
                                     </div>
                                     <div class="col-3 pl-0">
@@ -523,7 +593,7 @@
                                             [yearNavigator]="true"
                                             yearRange="1920:2030"
                                             [showIcon]="true"
-                                            appendTo="body"
+                                            appendTo="body" 
                                             [(ngModel)]="birthdate"></p-calendar>
                                     </div>
                                     <div class="col-1 pl-0">
@@ -532,7 +602,7 @@
                                             id="gender" 
                                             name="gender"
                                             appendTo="body"
-                                            class="dropdownFormat"
+                                            class="dropdownFormat" 
                                             [options]="genderOptions"
                                             [(ngModel)]="gender">
                                         </p-dropdown>
@@ -544,6 +614,9 @@
                                             name="idType"
                                             appendTo="body"
                                             class="dropdownFormat"
+                                            required
+                                            [ngClass]="requiredIDType" 
+                                            (keyup)="checkRequiredFields()"
                                             [options]="idTypeOptions" 
                                             [(ngModel)]="idType">
                                         </p-dropdown>
@@ -554,7 +627,17 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="firstname" class="labelFont mb-0">Prenume</label>
-                                            <input id="firstname" name="firstname" type="text" appendTo="body" [(ngModel)]="firstname" class="inputFormat" pInputText>
+                                            <input 
+                                                id="firstname" 
+                                                name="firstname" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="firstname" 
+                                                class="inputFormat"
+                                                required
+                                                [ngClass]="requiredFirstname" 
+                                                (keyup)="checkRequiredFields()" 
+                                                pInputText>
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
@@ -566,19 +649,34 @@
                                     <div class="col-2 pl-0">
                                         <span>
                                             <label for="birthWeight" class="labelFont mb-0">Greutate nastere [g]</label>
-                                            <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="inputFormat" pInputText>
+                                            <span *ngIf="!birthWeightEnabled">
+                                                <input id="birthWeight" name="birthWeight" type="text" appendTo="body" [(ngModel)]="birthWeight" class="readonlyInputFormat" pInputText readonly>
+                                            </span>
+                                            <span *ngIf="birthWeightEnabled">
+                                                <input 
+                                                    id="birthWeight" 
+                                                    name="birthWeight" 
+                                                    type="text" 
+                                                    appendTo="body" 
+                                                    [(ngModel)]="birthWeight" 
+                                                    class="inputFormat" 
+                                                    required
+                                                    [ngClass]="requiredBirthWeight" 
+                                                    (keyup)="checkRequiredFields()"
+                                                    pInputText>
+                                            </span>                                       
                                         </span>
                                     </div>
                                     <div class="col-1 pl-0">
                                         <span>
                                             <label for="series" class="labelFont mb-0">Serie</label>
-                                            <input id="series" name="series" type="text" appendTo="body" [(ngModel)]="series" class="inputFormat" pInputText>
+                                            <input id="series" name="series" type="text" appendTo="body" [(ngModel)]="series" class="inputFormat" pInputText required [ngClass]="requiredSeries" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-3 pl-0">
                                         <span>
                                             <label for="seriesNumber" class="labelFont mb-0">Numar</label>
-                                            <input id="seriesNumber" name="seriesNumber" type="text" appendTo="body" [(ngModel)]="seriesNumber" class="inputFormat" pInputText>
+                                            <input id="seriesNumber" name="seriesNumber" type="text" appendTo="body" [(ngModel)]="seriesNumber" class="inputFormat" pInputText required [ngClass]="requiredSeriesNumber" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                 </div>
@@ -587,19 +685,30 @@
                                     <div class="col-4">
                                         <span>
                                             <label for="cnp" class="labelFont mb-0">CNP</label>
-                                            <input id="cnp" name="cnp" type="text" appendTo="body" [(ngModel)]="cnp" class="inputFormat" pInputText [ngClass]="cnpValid" (keyup)="validateCNP()">
+                                            <input 
+                                                id="cnp" 
+                                                name="cnp" 
+                                                type="text" 
+                                                appendTo="body" 
+                                                [(ngModel)]="cnp" 
+                                                class="inputFormat" 
+                                                pInputText 
+                                                required
+                                                maxlength="13"
+                                                [ngClass]="cnpValid" 
+                                                (keyup)="validateCNP()">
                                         </span>
                                     </div>
                                     <div class="col-4 pl-0">
                                         <span>
                                             <label for="cid" class="labelFont mb-0">CID</label>
-                                            <input id="cid" name="cid" type="text" appendTo="body" [(ngModel)]="cid" class="inputFormat" pInputText>
+                                            <input id="cid" name="cid" type="text" appendTo="body" maxlength="19" placeholder="0000-0000-0000-0000" required [(ngModel)]="cid" class="inputFormat" pInputText [ngClass]="requiredCID" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
                                         <span>
                                             <label for="issuedBy" class="labelFont mb-0">Eliberat de</label>
-                                            <input id="issuedBy" name="issuedBy" type="text" appendTo="body" [(ngModel)]="issuedBy" class="inputFormat" pInputText>
+                                            <input id="issuedBy" name="issuedBy" type="text" appendTo="body" [(ngModel)]="issuedBy" class="inputFormat" pInputText required [ngClass]="requiredIssuedBy" (keyup)="checkRequiredFields()">
                                         </span>
                                     </div>
                                     <div class="col-2 pl-0">
@@ -612,6 +721,9 @@
                                             yearRange="1920:2030"
                                             [showIcon]="true"
                                             appendTo="body"
+                                            required
+                                            [ngClass]="requiredIssueDate" 
+                                            (keyup)="checkRequiredFields()"
                                             class="issueDateCalendar"
                                             [(ngModel)]="issueDate"></p-calendar>
                                     </div>
@@ -856,10 +968,20 @@
             
         </div>
     </div>
+
     <div class="row">
+        <div class="col-12 pl-0 mr-1">
+            <div class="message">
+                <p-messages [(value)]="successMessage"></p-messages>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" *ngIf="(newEpisodeOfCareTab && tabIndex == 3) || (newPatientTab && tabIndex == 2) || (unknownPatientTab && tabIndex == 1)">
         <div class="col-12 pl-0 mr-1">
             <div class="actions">
                 <button class="btn btn-raised btn-sm saveButton mr-2" 
+                    [disabled]="!episodeOfCareForm.valid || !patientForm.valid || !newPatientEOCForm.valid || !newPatientForm.valid"
                     (click)="saveChanges(episodeOfCareForm.value, patientForm.value, patientDetailsForm.value, medicalDataForm.value, newPatientEOCForm.value, newPatientForm.value, newPatientDetailsForm.value, newPatientMedicalDataForm.value)">Salveaza</button>
                 <button class="btn btn-raised btn-sm cancelButton mr-2" (click)="discardChanges()">Renunta</button>
             </div>
